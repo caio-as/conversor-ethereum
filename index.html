@@ -1,0 +1,64 @@
+<!-- Esse código é um conversor de moedas que utiliza html, css, js e uma api para consultar em tempo real a cotação da moeda Ethereum-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor ETH para Real</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+<body>
+
+    <h1>Conversor Ethereum para Real</h1>
+
+    <label for="ethInput">Digite o valor em Ethereum:</label>
+    <input type="number" id="ethInput" placeholder="" step="0.01">
+
+    <button onclick="converter()">Converter</button>
+
+    <p id="resultado"></p>
+
+    <div class="content-container">
+        <img src="moedas.png" alt="moedas">
+    </div>
+
+    <script>
+        function converter() {
+            // Obter o valor inserido pelo usuário
+            var valorEth = document.getElementById('ethInput').value;
+
+            // Verificar se o valor é um número positivo
+            if (isNaN(valorEth) || valorEth <= 0) {
+                alert("Digite um valor válido em Ethereum.");
+                return;
+            }
+
+            // API CoinGecko para obter a taxa de câmbio Ethereum
+            var apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=brl';
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    // Calcular o valor em Real
+                    var taxaDeCambio = data.ethereum.brl;
+                    var valorReal = valorEth * taxaDeCambio;
+
+                    // Eesultado na página
+                    document.getElementById('resultado').innerText = `O valor em Real é: R$ ${valorReal.toFixed(2)}`;
+                })
+                .catch(error => {
+                    console.error('Erro ao obter a taxa de câmbio:', error);
+                });
+        }
+    </script>
+
+</body>
+
+<footer>
+    <p>Criado por Caio Alves</p>
+</footer>
+
+</html>
